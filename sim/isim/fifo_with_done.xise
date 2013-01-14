@@ -31,52 +31,52 @@
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="14"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="14"/>
     </file>
-    <file xil_pn:name="../../PipeWork/src/main/vhdl/components/chopper.vhd" xil_pn:type="FILE_VHDL">
+    <file xil_pn:name="../../PipeWork/src/components/chopper.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="0"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
       <library xil_pn:name="PipeWork"/>
     </file>
-    <file xil_pn:name="../../PipeWork/src/main/vhdl/components/components.vhd" xil_pn:type="FILE_VHDL">
+    <file xil_pn:name="../../PipeWork/src/components/components.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="5"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="5"/>
       <library xil_pn:name="PipeWork"/>
     </file>
-    <file xil_pn:name="../../PipeWork/src/main/vhdl/components/delay_adjuster.vhd" xil_pn:type="FILE_VHDL">
+    <file xil_pn:name="../../PipeWork/src/components/delay_adjuster.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="4"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="4"/>
       <library xil_pn:name="PipeWork"/>
     </file>
-    <file xil_pn:name="../../PipeWork/src/main/vhdl/components/delay_register.vhd" xil_pn:type="FILE_VHDL">
+    <file xil_pn:name="../../PipeWork/src/components/delay_register.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="3"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="3"/>
       <library xil_pn:name="PipeWork"/>
     </file>
-    <file xil_pn:name="../../PipeWork/src/main/vhdl/components/queue_register.vhd" xil_pn:type="FILE_VHDL">
+    <file xil_pn:name="../../PipeWork/src/components/queue_register.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="0"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
       <library xil_pn:name="PipeWork"/>
     </file>
-    <file xil_pn:name="../../PipeWork/src/main/vhdl/components/reducer.vhd" xil_pn:type="FILE_VHDL">
+    <file xil_pn:name="../../PipeWork/src/components/reducer.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="0"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
       <library xil_pn:name="PipeWork"/>
     </file>
-    <file xil_pn:name="../../PipeWork/src/main/vhdl/components/sdpram.vhd" xil_pn:type="FILE_VHDL">
+    <file xil_pn:name="../../PipeWork/src/components/sdpram.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="7"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="6"/>
       <library xil_pn:name="PipeWork"/>
     </file>
-    <file xil_pn:name="../../PipeWork/src/main/vhdl/components/sdpram_model.vhd" xil_pn:type="FILE_VHDL">
+    <file xil_pn:name="../../PipeWork/src/components/sdpram_model.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="9"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="8"/>
       <library xil_pn:name="PipeWork"/>
     </file>
-    <file xil_pn:name="../../PipeWork/src/main/vhdl/components/syncronizer.vhd" xil_pn:type="FILE_VHDL">
+    <file xil_pn:name="../../PipeWork/src/components/syncronizer.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="2"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="2"/>
       <library xil_pn:name="PipeWork"/>
     </file>
-    <file xil_pn:name="../../PipeWork/src/main/vhdl/components/syncronizer_input_pending_register.vhd" xil_pn:type="FILE_VHDL">
+    <file xil_pn:name="../../PipeWork/src/components/syncronizer_input_pending_register.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="1"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="1"/>
       <library xil_pn:name="PipeWork"/>
