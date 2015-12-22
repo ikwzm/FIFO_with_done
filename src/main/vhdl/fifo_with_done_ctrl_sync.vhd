@@ -165,8 +165,8 @@ begin
             VAL_BITS    => i_valid'length   , --
             I_CLK_RATE  => I_CLK_RATE       , --
             O_CLK_RATE  => O_CLK_RATE       , --
-            I_CLK_FLOP  => 1,                 --
-            O_CLK_FLOP  => 1,                 --
+            I_CLK_FLOP  => 2,                 --
+            O_CLK_FLOP  => 2,                 --
             I_CLK_FALL  => 0,                 --
             O_CLK_FALL  => 0,                 --
             O_CLK_REGS  => 0                  --
