@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    fifo_with_done_test_bench.vhd
 --!     @brief   終了処理付きFIFO用テストベンチ
---!     @version 0.1.3
---!     @date    2012/9/20
+--!     @version 0.2.0
+--!     @date    2025/6/19
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2012 Ichiro Kawazome
+--      Copyright (C) 2012-2025 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -50,19 +50,26 @@ entity  FIFO_WITH_DONE_TEST_BENCH is
                       --! O_CLK_RATEとペアで入力側のクロック(I_CLK)と出力側のクロッ
                       --! ク(O_CLK)との関係を指定する.
                       integer :=  1;
+        I_CLK_FLOP  : --! @brief INPUT CLOCK FLOPPING :
+                      --! 入力側のクロック(I_CLK)と出力側のクロック(O_CLK)が非同期
+                      --! の場合に、出力側のFFからの制御信号を入力側のFFで叩く段数
+                      --! を指定する.
+                      integer range 0 to 31 := 2;
         O_CLK_PERIOD: --! @breif OUTPUT CLOCK PERIOD :
                       time    := 10 ns;
         O_CLK_RATE  : --! @brief OUTPUT CLOCK RATE :
                       --! I_CLK_RATEとペアで入力側のクロック(I_CLK)と出力側のクロッ
                       --! ク(O_CLK)との関係を指定する.
                       integer :=  1;
+        O_CLK_FLOP  : --! @brief OUTPUT CLOCK FLOPPING :
+                      --! 入力側のクロック(I_CLK)と出力側のクロック(O_CLK)が非同期
+                      --! の場合に、入力側のFFからの制御信号を出力側のFFで叩く段数
+                      --! を指定する.
+                      integer range 0 to 31 := 2;
         DELAY_CYCLE : --! @brief DELAY CYCLE :
                       --! 入力側から出力側への転送する際の遅延サイクルを指定する.
                       integer :=  0;
-        AUTO_FINISH : integer :=  1
-    );
-    port (
-        FINISH      : out std_logic
+        FINISH_ABORT: boolean := FALSE
     );
 end FIFO_WITH_DONE_TEST_BENCH;
 -----------------------------------------------------------------------------------
@@ -80,6 +87,7 @@ architecture MODEL of FIFO_WITH_DONE_TEST_BENCH is
     constant DATA_WIDTH  : integer := 3;
     constant DELAY       : time    :=  1 ns;
     signal   SCENARIO    : STRING(1 to 5);
+    signal   FINISH      : std_logic;
     signal   RST         : std_logic;
     signal   I_CLK       : std_logic;
     signal   I_CKE       : std_logic;
@@ -119,6 +127,8 @@ begin
             DATA_WIDTH  => DATA_WIDTH,
             I_CLK_RATE  => I_CLK_RATE,
             O_CLK_RATE  => O_CLK_RATE,
+            I_CLK_FLOP  => I_CLK_FLOP,
+            O_CLK_FLOP  => O_CLK_FLOP,
             DELAY_CYCLE => DELAY_CYCLE
         )
         port map(
@@ -144,12 +154,22 @@ begin
     -------------------------------------------------------------------------------
     ASYNC: if (I_CLK_RATE = 0 and O_CLK_RATE = 0) generate
         process begin
-            I_CLK <= '1'; wait for I_CLK_PERIOD/2;
-            I_CLK <= '0'; wait for I_CLK_PERIOD/2;
+            loop
+                I_CLK <= '1'; wait for I_CLK_PERIOD/2;
+                I_CLK <= '0'; wait for I_CLK_PERIOD/2;
+                exit when (FINISH = '1');
+            end loop;
+            I_CLK <= '0';
+            wait;
         end process;
         process begin
-            O_CLK <= '1'; wait for O_CLK_PERIOD/2;
-            O_CLK <= '0'; wait for O_CLK_PERIOD/2;
+            loop
+                O_CLK <= '1'; wait for O_CLK_PERIOD/2;
+                O_CLK <= '0'; wait for O_CLK_PERIOD/2;
+                exit when (FINISH = '1');
+            end loop;
+            O_CLK <= '0';
+            wait;
         end process;
         I_CKE <= '1';
         O_CKE <= '1';
@@ -184,7 +204,13 @@ begin
                         I_CKE <= '0';
                     end if;
                 end loop;
+                exit when (FINISH = '1');
             end loop;
+            I_CLK <= '0';
+            I_CKE <= '1';
+            O_CLK <= '0';
+            O_CKE <= '1';
+            wait;
         end process;
     end generate;
     -------------------------------------------------------------------------------
@@ -217,7 +243,13 @@ begin
                         O_CKE <= '0';
                     end if;
                 end loop;
+                exit when (FINISH = '1');
             end loop;
+            I_CLK <= '0';
+            I_CKE <= '1';
+            O_CLK <= '0';
+            O_CKE <= '1';
+            wait;
         end process;
     end generate;
     -------------------------------------------------------------------------------
@@ -403,11 +435,11 @@ begin
         ---------------------------------------------------------------------------
         assert(false) report MESSAGE_TAG & "Starting Run..." severity NOTE;
                         SCENARIO     <= "START";
+                        FINISH       <= '0';
                         RST          <= '1';
                         I_VAL        <= '0';
                         I_DONE       <= '0';
                         I_DATA       <= (others => '0');
-                        FINISH       <= '0';
                         o_start      <= '0';
                         o_total_size <= 0;
                         o_block_size <= 0;
@@ -496,13 +528,12 @@ begin
         ---------------------------------------------------------------------------
         -- シミュレーション終了
         ---------------------------------------------------------------------------
-        WAIT_I_CLK(10); 
-        if (AUTO_FINISH = 0) then
-            assert(false) report MESSAGE_TAG & " Run complete..." severity NOTE;
-            FINISH <= 'Z';
+        WAIT_I_CLK(10);
+        FINISH <= '1';
+        if (FINISH_ABORT) then
+            assert FALSE report "Simulation complete(success)."  severity FAILURE;
         else
-            FINISH <= 'Z';
-            assert(false) report MESSAGE_TAG & " Run complete..." severity FAILURE;
+            assert FALSE report "Simulation complete(success)."  severity NOTE;
         end if;
         wait;
     end process;

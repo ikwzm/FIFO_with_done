@@ -1,13 +1,13 @@
 -----------------------------------------------------------------------------------
---!     @file    ../../../src/examples/fifo_with_done/fifo_with_done_components.vhd --
+--!     @file    fifo_with_done_components.vhd                                   --
 --!     @brief   FIFO_WITH_DONE COMPONENT LIBRARY DESCRIPTION                    --
---!     @version 1.2.0                                                           --
---!     @date    2012/09/17                                                      --
+--!     @version 0.2.0                                                           --
+--!     @date    2025/06/19                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
 --                                                                               --
---      Copyright (C) 2012 Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>           --
+--      Copyright (C) 2025 Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>           --
 --      All rights reserved.                                                     --
 --                                                                               --
 --      Redistribution and use in source and binary forms, with or without       --
@@ -54,11 +54,25 @@ component FIFO_WITH_DONE
         I_CLK_RATE  : --! @brief INPUT CLOCK RATE :
                       --! O_CLK_RATEとペアで入力側のクロック(I_CLK)と出力側のクロッ
                       --! ク(O_CLK)との関係を指定する.
+                      --! 詳細は PipeWork.Components の SYNCRONIZER を参照.
                       integer :=  1;
         O_CLK_RATE  : --! @brief OUTPUT CLOCK RATE :
                       --! I_CLK_RATEとペアで入力側のクロック(I_CLK)と出力側のクロッ
                       --! ク(O_CLK)との関係を指定する.
+                      --! 詳細は PipeWork.Components の SYNCRONIZER を参照.
                       integer :=  1;
+        I_CLK_FLOP  : --! @brief INPUT CLOCK FLOPPING :
+                      --! 入力側のクロック(I_CLK)と出力側のクロック(O_CLK)が非同期
+                      --! の場合に、出力側のFFからの制御信号を入力側のFFで叩く段数
+                      --! を指定する.
+                      --! 詳細は PipeWork.Components の SYNCRONIZER を参照.
+                      integer range 0 to 31 := 2;
+        O_CLK_FLOP  : --! @brief OUTPUT CLOCK FLOPPING :
+                      --! 入力側のクロック(I_CLK)と出力側のクロック(O_CLK)が非同期
+                      --! の場合に、入力側のFFからの制御信号を出力側のFFで叩く段数
+                      --! を指定する.
+                      --! 詳細は PipeWork.Components の SYNCRONIZER を参照.
+                      integer range 0 to 31 := 2;
         DELAY_CYCLE : --! @brief DELAY CYCLE :
                       --! 入力側から出力側への転送する際の遅延サイクルを指定する.
                       integer :=  0
@@ -131,19 +145,26 @@ component FIFO_WITH_DONE_TEST_BENCH
                       --! O_CLK_RATEとペアで入力側のクロック(I_CLK)と出力側のクロッ
                       --! ク(O_CLK)との関係を指定する.
                       integer :=  1;
+        I_CLK_FLOP  : --! @brief INPUT CLOCK FLOPPING :
+                      --! 入力側のクロック(I_CLK)と出力側のクロック(O_CLK)が非同期
+                      --! の場合に、出力側のFFからの制御信号を入力側のFFで叩く段数
+                      --! を指定する.
+                      integer range 0 to 31 := 2;
         O_CLK_PERIOD: --! @breif OUTPUT CLOCK PERIOD :
                       time    := 10 ns;
         O_CLK_RATE  : --! @brief OUTPUT CLOCK RATE :
                       --! I_CLK_RATEとペアで入力側のクロック(I_CLK)と出力側のクロッ
                       --! ク(O_CLK)との関係を指定する.
                       integer :=  1;
+        O_CLK_FLOP  : --! @brief OUTPUT CLOCK FLOPPING :
+                      --! 入力側のクロック(I_CLK)と出力側のクロック(O_CLK)が非同期
+                      --! の場合に、入力側のFFからの制御信号を出力側のFFで叩く段数
+                      --! を指定する.
+                      integer range 0 to 31 := 2;
         DELAY_CYCLE : --! @brief DELAY CYCLE :
                       --! 入力側から出力側への転送する際の遅延サイクルを指定する.
                       integer :=  0;
-        AUTO_FINISH : integer :=  1
-    );
-    port (
-        FINISH      : out std_logic
+        FINISH_ABORT: boolean := FALSE
     );
 end component;
 end FIFO_WITH_DONE_COMPONENTS;
