@@ -1,8 +1,8 @@
 
 DUMMY_PLUG_PATH      = ../../Dummy_Plug
-DUMMY_PLUG_WORK_PATH = $(DUMMY_PLUG_PATH)/sim/ghdl/dummy_plug
+DUMMY_PLUG_WORK_PATH = $(DUMMY_PLUG_PATH)/sim/ghdl-0.35/dummy_plug
 PIPEWORK_PATH        = ../../PipeWork
-PIPEWORK_WORK_PATH   = ../../PipeWork/sim/ghdl
+PIPEWORK_WORK_PATH   = ../../PipeWork/sim/ghdl-0.35
 
 GHDL       = ghdl
 GHDLFLAGS  = --mb-comments -P$(PIPEWORK_WORK_PATH) -P$(DUMMY_PLUG_WORK_PATH)
