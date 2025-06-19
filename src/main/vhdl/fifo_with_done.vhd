@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    fifo_with_done.vhd
 --!     @brief   終了処理付きFIFO
---!     @version 0.1.3
---!     @date    2012/9/20
+--!     @version 0.2.0
+--!     @date    2025/6/19
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2012 Ichiro Kawazome
+--      Copyright (C) 2012-2025 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -49,11 +49,25 @@ entity  FIFO_WITH_DONE is
         I_CLK_RATE  : --! @brief INPUT CLOCK RATE :
                       --! O_CLK_RATEとペアで入力側のクロック(I_CLK)と出力側のクロッ
                       --! ク(O_CLK)との関係を指定する.
+                      --! 詳細は PipeWork.Components の SYNCRONIZER を参照.
                       integer :=  1;
         O_CLK_RATE  : --! @brief OUTPUT CLOCK RATE :
                       --! I_CLK_RATEとペアで入力側のクロック(I_CLK)と出力側のクロッ
                       --! ク(O_CLK)との関係を指定する.
+                      --! 詳細は PipeWork.Components の SYNCRONIZER を参照.
                       integer :=  1;
+        I_CLK_FLOP  : --! @brief INPUT CLOCK FLOPPING :
+                      --! 入力側のクロック(I_CLK)と出力側のクロック(O_CLK)が非同期
+                      --! の場合に、出力側のFFからの制御信号を入力側のFFで叩く段数
+                      --! を指定する.
+                      --! 詳細は PipeWork.Components の SYNCRONIZER を参照.
+                      integer range 0 to 31 := 2;
+        O_CLK_FLOP  : --! @brief OUTPUT CLOCK FLOPPING :
+                      --! 入力側のクロック(I_CLK)と出力側のクロック(O_CLK)が非同期
+                      --! の場合に、入力側のFFからの制御信号を出力側のFFで叩く段数
+                      --! を指定する.
+                      --! 詳細は PipeWork.Components の SYNCRONIZER を参照.
+                      integer range 0 to 31 := 2;
         DELAY_CYCLE : --! @brief DELAY CYCLE :
                       --! 入力側から出力側への転送する際の遅延サイクルを指定する.
                       integer :=  0
@@ -125,6 +139,8 @@ architecture RTL of FIFO_WITH_DONE is
             FIFO_DEPTH  : integer := 16;
             I_CLK_RATE  : integer :=  1;
             O_CLK_RATE  : integer :=  1;
+            I_CLK_FLOP  : integer range 0 to 31 := 2;
+            O_CLK_FLOP  : integer range 0 to 31 := 2;
             DELAY_CYCLE : integer :=  0
         );
         port (
@@ -155,6 +171,8 @@ begin
             FIFO_DEPTH  => FIFO_DEPTH  , -- 
             I_CLK_RATE  => I_CLK_RATE  , -- 
             O_CLK_RATE  => O_CLK_RATE  , -- 
+            I_CLK_FLOP  => I_CLK_FLOP  , -- 
+            O_CLK_FLOP  => O_CLK_FLOP  , -- 
             DELAY_CYCLE => DELAY_CYCLE   -- 
         )                                -- 
         port map (                       -- 
